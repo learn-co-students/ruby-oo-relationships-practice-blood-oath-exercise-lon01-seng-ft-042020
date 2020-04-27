@@ -33,10 +33,11 @@ class Follower
     def my_cults_slogans
         self.cults.map {|cult| cult.slogan}
     end
-
-    def self.most_active
+    
+    def most_active
         hash = Hash.new(0)
-        self.bloodoaths.map {|bloodoath| hash[bloodoath] =+ 1}
+        Bloodaoth.all.map {|bloodoath| hash[bloodoath.follower] += 1}
+        hash.max_by {{follower, count| count}}
     end
     
 end
