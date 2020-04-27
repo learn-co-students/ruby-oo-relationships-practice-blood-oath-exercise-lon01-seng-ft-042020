@@ -59,7 +59,7 @@ class Cult
     end
 
     def my_followers_mottos
-        self.followers.map{|fl| fl.life_motto}
+        self.followers.map{|fl| fl.life_motto}.reject{|fl| fl.life_motto == nil}
     end
 
     def self.least_popular
