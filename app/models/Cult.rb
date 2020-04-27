@@ -32,7 +32,7 @@ class Cult
     end
 
     def self.find_by_name(name)
-        self.all.select {|cult| cult.name == name}
+        self.all.find {|cult| cult.name == name}
     end
 
     def self.find_by_location(location)
@@ -44,19 +44,30 @@ class Cult
     end
 
     def followers_average_ages
-        bloodOaths = BloodOath.all.select {|bloodOath| bloodOath.cult == self}
-        followers_total_ages = bloodOaths.select {|bloodOath| bloodOath.follower.age}.sum
-        followers_total_ages / cult_population
+        total_age = followers.reduce(0) {|sum, follower| sum + follower.age}
+        total_age / followers.length
     end
 
-
-    def followers_mottos
+    def my_followers_mottos
         followers.map {|follower| follower.life_motto}
     end
 
-    def least_popular
-        num_followers = self.followers.length
-        Cult.all.min_by {|cult| cult.num_followers}
+    def self.least_popular
+        Cult.all.min_by {|cult| cult.followers.length}
+    end
+
+    def self.locations
+        Cult.all.map {|cult| cult.location}
+    end
+
+    def self.locations_hash
+        hash = Hash.new(0)
+        self.locations.map {|location| hash[location] += 1}
+        hash.max_by {|location, count| count}[0]
+    end
+
+    def self.most_popular_location
+        least_popular = Cult.all.max_by {|location, count| count}
     end
 
 end

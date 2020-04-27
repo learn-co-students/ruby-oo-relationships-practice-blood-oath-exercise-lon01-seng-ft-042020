@@ -14,9 +14,12 @@ class Follower
         @@all
     end
 
+    def bloodoaths
+        BloodOath.all.select {|bloodoath| bloodoath.follower == self}
+    end
+
     def cults
-        bloodaoths = BloodOath.all.select {|bloodoath| bloodoath.follower == self}
-        bloodaoths.map {|bloodoath| bloodoath.cult}
+        bloodoaths.map {|bloodoath| bloodoath.cult}
     end
 
     def join_cult(cult)
@@ -25,6 +28,15 @@ class Follower
 
     def self.of_a_certain_age(age)
         self.all.select {|follower| follower.age >= age}
+    end
+
+    def my_cults_slogans
+        self.cults.map {|cult| cult.slogan}
+    end
+
+    def self.most_active
+        hash = Hash.new(0)
+        self.bloodoaths.map {|bloodoath| hash[bloodoath] =+ 1}
     end
     
 end
