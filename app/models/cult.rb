@@ -1,24 +1,21 @@
 require "date"
 require "pry"
 class Cult 
-    attr_reader :name, :location, :founding_year, :slogan, :followers
+    attr_reader :name, :location, :founding_year, :slogan
     @@all = []
     def initialize(name, location, founding_year,slogan)
         @name = name
         @location = location
         @founding_year = founding_year
         @slogan = slogan
-        #@followers = [] #get rid of this
         @@all << self
     end 
 
     def recruit_follower(follower)
-       # @followers << follower
         BloodOath.new(Date.today.strftime("%Y-%m-%d"),self, follower)
     end
 
-    #make a blood oath method that gets all the blood oaths for this cult instance (can copy from follower)
-    #make a method that gets all followers for this cult instance
+    #this is good because it uses instances of blood oath to reach the follower
     def blood_oaths
         BloodOath.all.select do |blood_oath|
             blood_oath.cult == self
@@ -26,7 +23,7 @@ class Cult
     end
 
     def followers
-       self.blood_oaths.map{|blood_oath| blood_oath.followers}
+       self.blood_oaths.map{|blood_oath| blood_oath.follower}
     end
 
     def cult_population
@@ -36,17 +33,17 @@ class Cult
     def self.all
         @@all
     end
-        #should be select
+
     def self.find_by_name(cult_name)
         Cult.all.find{|cult| cult.name == cult_name}
     end
-        #should be select
+
     def self.find_by_location(cult_location)
-        Cult.all.find{|cult| cult.location == cult_location}
+        Cult.all.select{|cult| cult.location == cult_location}
     end
-        #should be select
+
     def self.find_by_founding_year(cult_founding_year)
-        Cult.all.find{|cult| cult.founding_year == cult_founding_year}
+        Cult.all.select{|cult| cult.founding_year == cult_founding_year}
     end
 
     def average_age
@@ -66,6 +63,7 @@ class Cult
         Cult.all.find_all{|cult| cult.location == cult_location}
     end
     #why does this default to the first location when there is no most popular?
+    #A: because thats what max_by does
     def self.most_common_location
         locations = Cult.all.map{|cult| cult.location}
         locations.max_by{|location| locations.count(location)}

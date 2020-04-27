@@ -17,7 +17,7 @@ fol3 = Follower.new("Stacey", 76, "firenedhsip")
 fol4 = Follower.new("Dave", 34, "nice one m8")
 
 cult1.recruit_follower(fol4)
-cult1.recruit_follower(fol3)
+fol3.join_cult(cult1)
 cult2.recruit_follower(fol1)
 cult4.recruit_follower(fol4)
 

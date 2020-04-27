@@ -9,6 +9,10 @@ class Follower
         @@all << self
     end
 
+    def join_cult(cult)
+        BloodOath.new(Date.today.strftime("%Y-%m-%d"),cult, self)
+    end
+
     def blood_oaths
         BloodOath.all.select do |blood_oath|
             blood_oath.follower == self
