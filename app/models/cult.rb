@@ -8,13 +8,25 @@ class Cult
         @location = location
         @founding_year = founding_year
         @slogan = slogan
-        @followers = []
+        #@followers = [] #get rid of this
         @@all << self
     end 
 
     def recruit_follower(follower)
-        @followers << follower
+       # @followers << follower
         BloodOath.new(Date.today.strftime("%Y-%m-%d"),self, follower)
+    end
+
+    #make a blood oath method that gets all the blood oaths for this cult instance (can copy from follower)
+    #make a method that gets all followers for this cult instance
+    def blood_oaths
+        BloodOath.all.select do |blood_oath|
+            blood_oath.cult == self
+        end
+    end
+
+    def followers
+       self.blood_oaths.map{|blood_oath| blood_oath.followers}
     end
 
     def cult_population
@@ -24,15 +36,15 @@ class Cult
     def self.all
         @@all
     end
-
+        #should be select
     def self.find_by_name(cult_name)
         Cult.all.find{|cult| cult.name == cult_name}
     end
-
+        #should be select
     def self.find_by_location(cult_location)
         Cult.all.find{|cult| cult.location == cult_location}
     end
-
+        #should be select
     def self.find_by_founding_year(cult_founding_year)
         Cult.all.find{|cult| cult.founding_year == cult_founding_year}
     end
